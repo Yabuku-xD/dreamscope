@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Analytics</h2>
+<p class="hero">Basic summaries for quick insight. For deeper EDA, use the CSV export or the notebook.</p>
+
+<section class="grid">
+	<div class="card">
+		<p><strong>Total dreams</strong></p>
+		<p style="font-size:2rem; margin:0;">{{ dreams|length }}</p>
+	</div>
+	<div class="card">
+		<p><strong>With transcript</strong></p>
+		<p style="font-size:2rem; margin:0;">{{ dreams|selectattr('transcript')|list|length }}</p>
+	</div>
+	<div class="card">
+		<p><strong>Avg sentiment</strong></p>
+		{% set vals = dreams|map(attribute='sentiment_compound')|select|list %}
+		<p style="font-size:2rem; margin:0;">{% if vals|length %}{{ '%.3f'|format((vals|sum) / (vals|length)) }}{% else %}-{% endif %}</p>
+	</div>
+</section>
+
+<table class="table" style="margin-top:1rem;">
+	<thead>
+		<tr>
+			<th>Dream ID</th>
+			<th>Created</th>
+			<th>Sentiment</th>
+			<th>Moon</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for d in dreams %}
+		<tr>
+			<td><a href="/dreams/{{ d.id }}">{{ d.id }}</a></td>
+			<td>{{ d.created_at }}</td>
+			<td>{% if d.sentiment_compound is not none %}{{ '%.3f'|format(d.sentiment_compound) }}{% else %}-{% endif %}</td>
+			<td>{{ d.moon_phase_name or '-' }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<p class="small">Download full dataset: <a href="/export.csv">export.csv</a></p>
+{% endblock %}

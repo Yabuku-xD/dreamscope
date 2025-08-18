@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Dream #{{ dream.id }}</h2>
+<p class="small"><strong>Created:</strong> {{ dream.created_at }}</p>
+
+<section class="card">
+	<p><audio controls src="/media/{{ dream.id }}" style="max-width: 100%"></audio></p>
+	{% if dream.transcript %}
+		<h3>Transcript</h3>
+		<p>{{ dream.transcript }}</p>
+	{% else %}
+		<p class="small">No transcript yet.</p>
+	{% endif %}
+</section>
+
+<div class="grid">
+	<section class="card">
+		<h3>Sentiment</h3>
+		<p>Compound: {% if dream.sentiment_compound is not none %}<span class="badge">{{ '%.3f'|format(dream.sentiment_compound) }}</span>{% else %}-{% endif %}</p>
+	</section>
+	<section class="card">
+		<h3>Moon</h3>
+		<p>{{ dream.moon_phase_name or '-' }}{% if dream.moon_phase %} (age {{ '%.2f'|format(dream.moon_phase) }}){% endif %}</p>
+	</section>
+</div>
+
+<div class="grid">
+	<section class="card">
+		<h3>Emotions</h3>
+		<pre>{{ dream.emotions_json or '{}' }}</pre>
+	</section>
+	<section class="card">
+		<h3>Keywords</h3>
+		<pre>{{ dream.keywords_json or '[]' }}</pre>
+	</section>
+</div>
+
+<section class="card">
+	<h3>Themes</h3>
+	<pre>{{ dream.themes_json or '[]' }}</pre>
+</section>
+
+<section class="row">
+	<form method="post" action="/analyze/{{ dream.id }}">
+		<button type="submit" class="btn">Re-Analyze</button>
+	</form>
+	<a class="btn btn-secondary" href="/dreams">Back to list</a>
+</section>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Dreams</h2>
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Created</th>
+			<th>Transcript</th>
+			<th>Sentiment</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for d in dreams %}
+		<tr>
+			<td><a href="/dreams/{{ d.id }}">#{{ d.id }}</a></td>
+			<td>{{ d.created_at }}</td>
+			<td>{{ (d.transcript or '')[:80] }}{% if d.transcript and d.transcript|length > 80 %}…{% endif %}</td>
+			<td>
+				{% if d.sentiment_compound is not none %}
+					{% set s = d.sentiment_compound %}
+					<span class="badge {% if s > 0.15 %}positive{% elif s < -0.15 %}negative{% else %}neutral{% endif %}">
+						{{ '%.3f'|format(s) }}
+					</span>
+				{% else %}-{% endif %}
+			</td>
+			<td>
+				<form method="post" action="/analyze/{{ d.id }}" style="display:inline">
+					<button type="submit" class="btn">Analyze</button>
+				</form>
+				<a class="btn btn-secondary" href="/dreams/{{ d.id }}">View</a>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

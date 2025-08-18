@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#0f172a" />
+		<title>{{ title or 'DreamScope' }}</title>
+		<link rel="stylesheet" href="/static/css/styles.css" />
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<h1><a href="/">DreamScope</a></h1>
+				<nav>
+					<a href="/">Record</a>
+					<a href="/dreams">Dreams</a>
+					<a href="/analytics">Analytics</a>
+					<a href="/export.csv">Export CSV</a>
+				</nav>
+			</div>
+		</header>
+		<main class="container">
+			{% block content %}{% endblock %}
+		</main>
+	</body>
+</html>

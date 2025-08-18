@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Record your dream</h2>
+<p class="hero">Tap record right after you wake up. Add optional context to enrich analysis.</p>
+
+<section class="card">
+	<div class="row">
+		<button type="button" id="recordBtn" class="btn">Start Recording</button>
+		<button type="button" id="stopBtn" class="btn btn-secondary" disabled>Stop</button>
+	</div>
+	<div class="audio-box">
+		<audio id="preview" controls></audio>
+	</div>
+	<input type="file" id="audioInput" name="audio" accept="audio/wav" hidden />
+</section>
+
+<form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data" class="card" style="margin-top:1rem">
+	<div class="grid">
+		<div>
+			<label>Sleep start</label>
+			<input type="datetime-local" name="sleep_start" />
+		</div>
+		<div>
+			<label>Sleep end</label>
+			<input type="datetime-local" name="sleep_end" />
+		</div>
+	</div>
+
+	<div class="grid">
+		<div>
+			<label>Stress level (0-10)</label>
+			<input type="number" name="stress_level" min="0" max="10" placeholder="e.g. 4" />
+			<div class="small">How stressed did you feel before sleep?</div>
+		</div>
+		<div>
+			<label>Diet tags (comma separated)</label>
+			<input type="text" name="diet_tags" placeholder="spicy, caffeine, late meal" />
+			<div class="small">Optional food/drink context.</div>
+		</div>
+	</div>
+
+	<div class="grid">
+		<div>
+			<label>Latitude</label>
+			<input type="number" name="latitude" id="lat" step="0.000001" />
+		</div>
+		<div>
+			<label>Longitude</label>
+			<input type="number" name="longitude" id="lon" step="0.000001" />
+		</div>
+	</div>
+
+	<div class="row">
+		<button type="submit" disabled id="submitBtn" class="btn">Upload Dream</button>
+		<button type="button" id="geoBtn" class="btn btn-secondary">Use My Location</button>
+	</div>
+</form>
+
+<script src="/static/js/recorder.js"></script>
+<script>
+	(function(){
+		const geoBtn = document.getElementById('geoBtn');
+		const lat = document.getElementById('lat');
+		const lon = document.getElementById('lon');
+		if (navigator.geolocation) {
+			geoBtn.addEventListener('click', () => {
+				navigator.geolocation.getCurrentPosition((pos) => {
+					lat.value = pos.coords.latitude.toFixed(6);
+					lon.value = pos.coords.longitude.toFixed(6);
+				}, () => alert('Unable to fetch location'));
+			});
+		} else {
+			geoBtn.style.display = 'none';
+		}
+	})();
+</script>
+{% endblock %}
