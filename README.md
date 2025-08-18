@@ -1,5 +1,7 @@
 ## DreamScope: Offline Crowdsourced Dream Analysis (No API Keys)
 
+![DreamScope preview](preview.png)
+
 DreamScope is a full-stack project to analyze patterns in dream content from crowdsourced voice recordings. It records audio right after waking, transcribes locally (offline), extracts themes/emotions/keywords, and enriches with weather and moon phase.
 
 ### What’s included
