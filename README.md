@@ -1,4 +1,4 @@
-## DreamScope: Offline Crowdsourced Dream Analysis (No API Keys)
+## DreamScope: Offline Crowdsourced Dream Analysis
 
 ![DreamScope preview](preview.png)
 
